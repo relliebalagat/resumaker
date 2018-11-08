@@ -46,12 +46,22 @@ session_start();
 	}
 	require 'header_user.php';
 	require ("connect.php");
+
+
+	function displayYear() {
+		$year = date("Y");
+											
+		for($i = $year; $i > 1980; $i--) {
+			echo '<option value="' . $year . '">'. $year .'</option>';
+			$year--;
+		}
+	}
 	
 ?>
 <body>
 
 	<div class="container">
-
+		<input type="hidden" id="userAccountId" value="<?php echo $_SESSION['user_id'] ?>">
 		<h2>Create your Resume</font></h2><hr/><br>
 		<form action = '<?php echo $_SERVER ['PHP_SELF'];?>' method = 'post' enctype="multipart/form-data">
 			<div class="panel-group" id="accordion">
@@ -177,9 +187,29 @@ session_start();
 			 	 	<div id="collapse2" class="panel-collapse collapse in">
 					  	<div class="panel-body">
 						  	<div class="col-lg-12 form-group">
-						  		<div class="col-lg-3">
-						  			<label>Duration</label>
-						  			<input type="text" class="form-control" id="eduration" placeholder="Enter Duration">
+						  		<div class="col-lg-2">
+						  			<label>From</label>
+						  			
+										<select class="form-control" id="fromeduration">
+											<?php
+
+											displayYear();
+
+											?>
+										</select>
+
+						  		</div>
+									<div class="col-lg-2">
+						  			<label>To</label>
+						  			
+										<select class="form-control" id="toeduration">
+											<?php
+
+											displayYear();
+
+											?>
+										</select>
+
 						  		</div>
 						  		<div class="col-lg-4">
 						  			<label>Level</label>
@@ -190,32 +220,45 @@ session_start();
 										<option value= 'Post Graduate'>Post Graduate</option>
 									</select>
 						  		</div>
-						  		<div class="col-lg-5">
+						  		<div class="col-lg-4">
 						  			<label>School</label>
 						  			<input type="text" class="form-control" id="eschool" placeholder="Enter SChool">
 						  		</div>
 					  		</div>
 
 	  						<div class="col-lg-12 form-group">
-						  		<div class="col-lg-5">
+									<div class="col-lg-3">
+						  			<label>Field Of Study</label>
+						  			<select class="form-control" id="efield">
+											<option value="" selected></option>
+											<option value="Accounting and Finance">Accounting and Finance</option>
+											<option value="Information Technology">Information Technology</option>
+											<option value="Engineering">Engineering</option>
+										</select>
+						  		</div>
+
+						  		<div class="col-lg-3">
 						  			<label>Course</label>
 						  			<input type="text" class="form-control" id="ecourse" placeholder="Enter Course">
 						  		</div>
-						  		<div class="col-lg-4">
+						  		<div class="col-lg-3">
 						  			<label>Award</label>
 						  			<input type="text" class="form-control" id="eaward" placeholder="Enter Award">
 						  		</div>
-						  		<div class="col-lg-3">
-						  			<input type="submit" class="btn btn-success btnAdd " id="eadd" value="Add">
+
+						  		<div class="col-lg-2">
+						  			<button type="button" class="btn btn-success btnAdd " id="eadd">Add</button>
 						  		</div>
 					  		</div>
 					  		<br>
 					  		<div  class="col-lg-12 form-group">
 					  			<table id="tblEducation" class='table table-responsive table-bordered' style='display: none'>
 									<tr>
-									<th>Duration</th>
+									<th>From</th>
+									<th>To</th>
 									<th>Level</th>
 									<th>School</th>
+									<th>Field Of Study</th>
 									<th>Course</th>
 									<th>Award</th>
 									</tr>
@@ -270,27 +313,46 @@ session_start();
 					  	<div class="panel-body">
 						  	<div class="col-lg-12 form-group">
 						  		<div class="col-lg-3">
-						  			<label>Duration</label>
-						  			<input type="text" class="form-control" id="wduration" placeholder="Enter Duration">
+						  			<label>From</label>
+										<select class="form-control" id="wfromduration">
+											
+											<?php
+	
+												displayYear();						
+	
+											?>
+										</select>
+						  		</div>
+									<div class="col-lg-3">
+						  			<label>To</label>
+										<select class="form-control" id="wtoduration">
+											
+											<?php
+											
+											displayYear();
+											
+											?>
+										</select>
 						  		</div>
 						  		<div class="col-lg-4">
 						  			<label>Job Position</label>
 						  			<input type="text" class="form-control" id="wposition" placeholder="Enter Job Position">
 						  			
 						  		</div>
-						  		<div class="col-lg-5">
-						  			<label>Company</label>
-						  			<input type="text" class="form-control" id="wcompany" placeholder="Enter Company">
-						  		</div>
+						  		
 					  		</div>
 
 					  		<div class="col-lg-12 form-group">
+									<div class="col-lg-5">
+						  			<label>Company</label>
+						  			<input type="text" class="form-control" id="wcompany" placeholder="Enter Company">
+						  		</div>
 						  		<div class="col-lg-5">
 						  			<label>Job Description</label>
 						  			<input type="text" class="form-control" id="wdescription" placeholder="Enter Job Description">
 						  		</div>
-						  		<div class="col-lg-3">
-						  			<input type="submit" class="btn btn-success btnAdd " id="wadd" value="Add">
+						  		<div class="col-lg-2">
+						  			<button type="button" class="btn btn-success btnAdd " id="wadd">Add</button>
 						  		</div>
 					  		</div>
 
@@ -298,7 +360,8 @@ session_start();
 
 					  			<table id="tblWork" class='table table-responsive table-bordered' style="display: none">
 									<tr>
-									<th>Duration</th>
+									<th>From</th>
+									<th>To</th>
 									<th>Position</th>
 									<th>Company</th>
 									<th>Description</th>
@@ -363,7 +426,7 @@ session_start();
 									</select>
 						  		</div>
 						  		<div class="col-lg-2">
-						  			<input type="submit" class="btn btn-success btnAdd " id="sadd" value="Add">
+						  			<button type="button" class="btn btn-success btnAdd " id="sadd">Add</button>
 						  		</div>
 					  		</div>
 					  		<div class="col-lg-12 form-group">
@@ -647,90 +710,6 @@ session_start();
 			</div>
 		</form>
 
-		<?php			
-			if (isset($_POST['btnSave'])){
-				$fname = $_POST['fname'];
-				$mname = $_POST['mname'];
-				$lname = $_POST['lname'];
-				$bday = $_POST['bday'];
-				$email = $_POST['email'];
-				$contactno = $_POST['contactno'];
-				$address = $_POST['address'];
-				$email = $_POST['email'];
-				//$image = $_POST['image'];
-				$civil = $_POST['civil'];
-				$religion = $_POST['religion'];
-				$height = $_POST['height'];
-				$weight = $_POST['weight'];
-				$id = $_SESSION['user_id'];
-
-				//file upload
-				$target_dir = "img/";
-				$target_file = $target_dir . basename($_FILES["image"]["name"]);
-				$uploadOk = 1;
-				$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-
-				echo $imageFileType;
-				echo $target_file;
-				$check = getimagesize($_FILES["image"]["tmp_name"]);
-			    if($check !== false) {
-			        echo "File is an image - " . $check["mime"] . ".";
-			        $uploadOk = 1;
-			    } else {
-			        echo "File is not an image.";
-			        $uploadOk = 0;
-			    }
-
-			    //echo $imageFileType;
-						
-				$sql = "INSERT INTO personaldetail (UserAccountId, Image, Address, CivilStatus, Height, Weight, Religion)
-				VALUES('$id', '$target_file', '$address', '$civil', '$height', '$weight','$religion')";
-				$q = mysqli_query($con,$sql);
-				echo $sql;
-				// if ($con->query($sql) === TRUE) {
-				//     echo "New record created successfully";
-				// } else {
-				//     echo "Error: " . $sql . "<br>" . $con->error;
-				// }
-
-				//echo $sql;
-				// echo $con;
-			
-				if (!$q){
-					echo "error in the transaction";
-				}else{
-					echo "successfully saved";
-					
-				}
-				$con->close();
-			}
-
-			// Check file size
-			if ($_FILES["image"]["size"] > 500000) {
-			    echo "Sorry, your file is too large.";
-			    $uploadOk = 0;
-			}
-			// // Allow certain file formats
-			// if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-			// && $imageFileType != "gif" ) {
-			//     echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-			//     $uploadOk = 0;
-			// }
-			
-			 // Check if $uploadOk is set to 0 by an error
-			if ($uploadOk == 0) {
-			    echo "Sorry, your file was not uploaded.";
-			//if everything is ok, try to upload file
-			} else {
-			    if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-			        echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
-			    } else {
-			        echo "Sorry, there was an error uploading your file.";
-			    }
-			}
-				
-	
-		?>
 	</div>
 
 	<?php
@@ -757,26 +736,93 @@ cctr = 0;
 
 
 $('#eadd').click(function(e) {
-    e.preventDefault();
+		e.preventDefault();
+
+		var fromduration = $('#fromeduration').val();
+		var toduration = $('#toeduration').val();
+		var schoolLevel = $('#elevel').val();
+		var school = $('#eschool').val();
+		var fieldofstudy = $('#efield').val();
+		var course = $('#ecourse').val();
+		var award = $('#eaward').val();
+
+		var data = "fromduration=" + fromduration + "&toduration=" + toduration + "&schoolLevel=" + schoolLevel + "&school=" + school + "&course=" + course + "&award=" + award + "&fieldofstudy=" + encodeURIComponent(fieldofstudy);
+	console.log(data);
+		var xml = new XMLHttpRequest();
+    xml.onreadystatechange = function() {
+      if(this.readyState == 4 && this.status == 200) {
+				console.log(this.responseText);
+				if(this.responseText === 'success') {
+					alert('Education add successfully');
+				} else {
+					alert('Cannot add Education');
+				}
+      }
+    }
+    xml.open("POST", "forms/addeducation.php", true);
+    xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xml.send(data);	
+
+
+
     //alert('jom');
     $('#tblEducation').show();
-    $('#tblEducation').append("<tr><td><label name='lblduration"+(ctr)+"' >"+ $('#eduration').val() +"</label></td><td><label name='lbllevel"+(ctr)+"' >"+ $('#elevel').val() +"</label></td><td><label name='lblschool"+(ctr)+"' >"+ $('#eschool').val() +"</label></td><td><label name='lblcourse"+(ctr)+"' >"+ $('#ecourse').val() +"</label></td><td><label name='lblaward"+(ctr)+"' >"+ $('#eaward').val() +"</label></td></tr>");
+    $('#tblEducation').append("<tr><td><label name='lbltoduration"+(ctr)+"' >"+ $('#toeduration').val() +"</label></td><td><label name='lbltoduration"+(ctr)+"' >"+ $('#fromeduration').val() +"</label></td><td><label name='lbllevel"+(ctr)+"' >"+ $('#elevel').val() +"</label></td><td><label name='lblschool"+(ctr)+"' >"+ $('#eschool').val() +"</label></td><td><label name='lbltoduration"+(ctr)+"' >"+ $('#efield').val() +"</label></td><td><label name='lblcourse"+(ctr)+"' >"+ $('#ecourse').val() +"</label></td><td><label name='lblaward"+(ctr)+"' >"+ $('#eaward').val() +"</label></td></tr>");
 	ctr++;
 	$('#txtctr').val(ctr);
 });
 
 $('#wadd').click(function(e) {
-    e.preventDefault();
+		
+		var fromduration = $('#wfromduration').val();
+		var toduration = $('#wtoduration').val();
+		var position = $('#wposition').val();
+		var company = $('#wcompany').val();
+		var description = $('#wdescription').val();
+		
+	  var data = "fromduration=" + fromduration + "&toduration=" + toduration + "&position=" + position + "&company=" + company + "&description=" + description;
+		
+		var xml = new XMLHttpRequest();
+    xml.onreadystatechange = function() {
+      if(this.readyState == 4 && this.status == 200) {
+				console.log(this.responseText);
+				if(this.responseText === 'success') {
+					alert('Work Experience add successfully');
+				} else {
+					alert('Cannot add Work Experience');
+				}
+      }
+    }
+    xml.open("POST", "forms/addworkexperience.php", true);
+    xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xml.send(data);	
+
     //alert('jom');
     $('#tblWork').show();
-    $('#tblWork').append("<tr><td><label name='lblwduration"+(wctr)+"' >"+ $('#wduration').val() +"</label></td><td><label name='lblwposition"+(wctr)+"' >"+ $('#wposition').val() +"</label></td><td><label name='lblwcompany"+(wctr)+"' >"+ $('#wcompany').val() +"</label></td><td><label name='lblwdescription"+(wctr)+"' >"+ $('#wdescription').val() +"</label></td></tr>");
+    $('#tblWork').append("<tr><td><label name='lblwfromduration"+(wctr)+"' >"+ $('#wfromduration').val() +"</label></td><td><label name='lblwtoduration"+(wctr)+"' >"+ $('#wtoduration').val() +"</label></td><td><label name='lblwposition"+(wctr)+"' >"+ $('#wposition').val() +"</label></td><td><label name='lblwcompany"+(wctr)+"' >"+ $('#wcompany').val() +"</label></td><td><label name='lblwdescription"+(wctr)+"' >"+ $('#wdescription').val() +"</label></td></tr>");
 	wctr++;
 	$('#txtwctr').val(wctr);
 
 });
 
 $('#sadd').click(function(e) {
-    e.preventDefault();
+		//e.preventDefault();
+		var userId = document.getElementById('userAccountId').value;
+		var xml = new XMLHttpRequest();
+    xml.onreadystatechange = function() {
+      if(this.readyState == 4 && this.status == 200) {
+				if(this.responseText === 'success') {
+					alert('Skill add successfully');
+				} else {
+					alert('Cannot add skill');
+				}
+      }
+    }
+    xml.open("POST", "forms/addskill.php", true);
+    xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xml.send("skill=" + $('#skill').val() +"&skillLevel=" + $('#slevel').val() );
+
+    
     //alert('jom');
     $('#tblSkill').show();
     $('#tblSkill').append("<tr><td><label name='lblskill"+(sctr)+"' >"+ $('#skill').val() +"</label></td><td><label name='lblslevel"+(sctr)+"' >"+ $('#slevel').val() +"</label></td></tr>");
