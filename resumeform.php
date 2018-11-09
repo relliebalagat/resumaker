@@ -63,7 +63,7 @@ session_start();
 	<div class="container">
 		<input type="hidden" id="userAccountId" value="<?php echo $_SESSION['user_id'] ?>">
 		<h2>Create your Resume</font></h2><hr/><br>
-		<form action = '<?php echo $_SERVER ['PHP_SELF'];?>' method = 'post' enctype="multipart/form-data">
+		<form action="forms/insertpersonaldetails.php" method='post' enctype="multipart/form-data">
 			<div class="panel-group" id="accordion">
              	<input type="text" value=0 id="txtctr" name="txtctr" hidden>
              	<input type="text" value=0 id="txtwctr" name="txtwctr" hidden>
@@ -263,8 +263,8 @@ session_start();
 									<th>Award</th>
 									</tr>
 								</table>
-
-
+								<!-- <script type="text/javascript">$('#tblEducation').show()</script> -->
+									
 						  		<?php
 								
 								$q = (int)$_SESSION['user_id'];
@@ -277,10 +277,10 @@ session_start();
 
 								if(mysqli_num_rows($result) > 0)
 								{
-									//echo "";
 									?>
-									<script type="text/javascript">$('#tblEducation').show()</script>
+									
 									<?php
+									
 
 									while($row = mysqli_fetch_array($result)) {
 									    echo "<tr>";
@@ -292,7 +292,8 @@ session_start();
 									    echo "</tr>";
 									}
 									echo "</table>";
-								}
+								} 
+							
 								
 								mysqli_close($con);
 								?>
@@ -747,7 +748,7 @@ $('#eadd').click(function(e) {
 		var award = $('#eaward').val();
 
 		var data = "fromduration=" + fromduration + "&toduration=" + toduration + "&schoolLevel=" + schoolLevel + "&school=" + school + "&course=" + course + "&award=" + award + "&fieldofstudy=" + encodeURIComponent(fieldofstudy);
-	console.log(data);
+
 		var xml = new XMLHttpRequest();
     xml.onreadystatechange = function() {
       if(this.readyState == 4 && this.status == 200) {
@@ -762,8 +763,6 @@ $('#eadd').click(function(e) {
     xml.open("POST", "forms/addeducation.php", true);
     xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xml.send(data);	
-
-
 
     //alert('jom');
     $('#tblEducation').show();
@@ -834,6 +833,25 @@ $('#sadd').click(function(e) {
 $('#semadd').click(function(e) {
     e.preventDefault();
     //alert('jom');
+		var date = $('#semduration').val();
+		var seminar = $('#semtraining').val();
+		var description = $('#semdescription').val();
+		var data = "date=" + date + "&seminar=" + seminar + "&description=" + description;
+		var xml = new XMLHttpRequest();
+		xml.onreadystatechange = function() {
+      if(this.readyState == 4 && this.status == 200) {
+				console.log(this.responseText);
+				if(this.responseText === 'success') {
+					alert('Seminar/Training add successfully');
+				} else {
+					alert('Cannot add seminar/training');
+				}
+      }
+    }
+    xml.open("POST", "forms/addseminar.php", true);
+    xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xml.send(data);
+
     $('#tblSeminar').show();
     $('#tblSeminar').append("<tr><td><label name='lblsemduration"+(stctr)+"' >"+ $('#semduration').val() +"</label></td><td><label name='lblsemtraining"+(stctr)+"' >"+ $('#semtraining').val() +"</label></td><td><label name='lblsemdescription"+(stctr)+"' >"+ $('#semdescription').val() +"</label></td></tr>");
 	stctr++;
@@ -844,6 +862,27 @@ $('#semadd').click(function(e) {
 $('#awardadd').click(function(e) {
     e.preventDefault();
     //alert('jom');
+		var duration = $('#aaduration').val();
+		var award = $('#award').val();
+		var description = $('#aadescription').val();
+		
+		var data = "date=" + duration + "&award=" + award + "&description=" + description;
+
+		var xml = new XMLHttpRequest();
+		xml.onreadystatechange = function() {
+      if(this.readyState == 4 && this.status == 200) {
+				console.log(this.responseText);
+				if(this.responseText === 'success') {
+					alert('Achievement add successfully');
+				} else {
+					alert('Cannot add Achievement');
+				}
+      }
+    }
+    xml.open("POST", "forms/addachievement.php", true);
+    xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xml.send(data);
+
     $('#tblAward').show();
     $('#tblAward').append("<tr><td><label name='lblaaduration"+(actr)+"' >"+ $('#aaduration').val() +"</label></td><td><label name='lblaward"+(actr)+"' >"+ $('#award').val() +"</label></td><td><label name='lblaadescription"+(actr)+"' >"+ $('#aadescription').val() +"</label></td></tr>");
 	actr++;
@@ -854,7 +893,29 @@ $('#awardadd').click(function(e) {
 $('#cradd').click(function(e) {
     e.preventDefault();
     //alert('jom');
-    $('#tblCharacter').show();
+	var name = $('#crname').val();
+	var school = $('#crschool').val();
+	var position = $('#crposition').val();
+	var contactNo = $('#crcontant').val();
+	
+	var data = "name=" + name + "&school=" + school + "&position=" + position + "&contact=" + contactNo;
+
+	var xml = new XMLHttpRequest();
+	xml.onreadystatechange = function() {
+		if(this.readyState == 4 && this.status == 200) {
+			console.log(this.responseText);
+			if(this.responseText === 'success') {
+				alert('Achievement add successfully');
+			} else {
+				alert('Cannot add Achievement');
+			}
+		}
+	}
+	xml.open("POST", "forms/addreference.php", true);
+	xml.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xml.send(data);
+
+	 $('#tblCharacter').show();
    $('#tblCharacter').append("<tr><td><label name='lblcrname"+(cctr)+"' >"+ $('#crname').val() +"</label></td><td><label name='lblcrschool"+(cctr)+"' >"+ $('#crschool').val() +"</label></td><td><label name='lblcrposition"+(cctr)+"' >"+ $('#crposition').val() +"</label></td><td><label name='lblcrcontant"+(cctr)+"' >"+ $('#crcontant').val() +"</label></td></tr>");
 	cctr++;
 	$('#txtcctr').val(cctr);

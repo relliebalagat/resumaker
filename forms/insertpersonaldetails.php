@@ -1,7 +1,8 @@
 
 <?php			
 
-require_once('connect.php');
+session_start();
+require_once('../connect.php');
 
 if (isset($_POST['btnSave'])){
   $fname = $_POST['fname'];
@@ -20,7 +21,7 @@ if (isset($_POST['btnSave'])){
   $id = $_SESSION['user_id'];
 
   //file upload
-  $target_dir = "img/";
+  $target_dir = "../img/profilepics/";
   $target_file = $target_dir . basename($_FILES["image"]["name"]);
   $uploadOk = 1;
   $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -34,6 +35,32 @@ if (isset($_POST['btnSave'])){
         $uploadOk = 0;
     }
 
+    // Check file size
+    if ($_FILES["image"]["size"] > 500000) {
+        echo "Sorry, your file is too large.";
+        $uploadOk = 0;
+    }
+    // Allow certain file formats
+    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+    && $imageFileType != "gif" ) {
+        echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+        $uploadOk = 0;
+    }
+
+    // Check if $uploadOk is set to 0 by an error
+    if ($uploadOk == 0) {
+        echo "Sorry, your file was not uploaded.";
+    //if everything is ok, try to upload file
+    } else {
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+            echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
+        } else {
+            echo "Sorry, there was an error uploading your file.";
+        }
+    }
+
+
+
     //echo $imageFileType;
       
   $sql = "INSERT INTO personaldetail (UserAccountId, Image, Address, CivilStatus, Height, Weight, Religion)
@@ -42,6 +69,7 @@ if (isset($_POST['btnSave'])){
   
   if ($con->query($sql) === TRUE) {
       echo "New record created successfully";
+      header('location: ../success_reservation.php');
   } else {
       echo "Error: " . $sql . "<br>" . $con->error;
   }
@@ -54,28 +82,5 @@ if (isset($_POST['btnSave'])){
   $con->close();
 }
 
-// Check file size
-if ($_FILES["image"]["size"] > 500000) {
-    echo "Sorry, your file is too large.";
-    $uploadOk = 0;
-}
-// // Allow certain file formats
-// if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-// && $imageFileType != "gif" ) {
-//     echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-//     $uploadOk = 0;
-// }
-
-  // Check if $uploadOk is set to 0 by an error
-if ($uploadOk == 0) {
-    echo "Sorry, your file was not uploaded.";
-//if everything is ok, try to upload file
-} else {
-    if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-        echo "The file ". basename( $_FILES["image"]["name"]). " has been uploaded.";
-    } else {
-        echo "Sorry, there was an error uploading your file.";
-    }
-}
   
 
